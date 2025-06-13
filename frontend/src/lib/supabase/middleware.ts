@@ -35,13 +35,18 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const authPath = ["/signin", "/signup", "/forgot-password"];
+  const authPath = ["/signin", "/signup", "/forgot-password", "/callback"];
   const homePath = ["/", "/features", "/pricing", "/about", "/contact"];
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (user && authPath.includes(request.nextUrl.pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
   if (
     !user &&
     !authPath.includes(request.nextUrl.pathname) &&

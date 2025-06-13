@@ -26,7 +26,6 @@ export default function SignupPage() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Create Account</h1>
-            <p className="text-muted-foreground text-lg">Join us!</p>
           </div>
 
           <SignupForm />

@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { signup } from "@/lib/auth";
+import ProviderAuth from "./provider-auth";
 import { toast } from "sonner";
 
 const formSchema = z
@@ -176,7 +177,7 @@ export default function SignupForm() {
           />
           <Button
             type="submit"
-            className="cursor-pointer w-full py-3 text-lg font-medium"
+            className="cursor-pointer w-full py-3 text-lg"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -188,6 +189,8 @@ export default function SignupForm() {
               "Sign Up"
             )}
           </Button>
+          {/* Other signup options */}
+          <ProviderAuth />
         </form>
       </Form>
     </div>

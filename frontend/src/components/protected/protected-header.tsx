@@ -17,8 +17,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signout } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 export default function ProtectedHeader() {
+  const router = useRouter();
+
   return (
     <Header
       showLogo={true}
@@ -52,6 +55,7 @@ export default function ProtectedHeader() {
                 <DropdownMenuItem
                   onClick={async () => {
                     await signout();
+                    router.push("/signin");
                   }}
                   className="cursor-pointer"
                 >

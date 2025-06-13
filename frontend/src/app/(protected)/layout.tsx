@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
-import ProtectedHeader from "@/components/protected/protected-header";
+import { InboxSidebar } from "@/components/inbox/inbox-sidebar";
 
 export const metadata: Metadata = {
   title: "Name | Dashboard",
@@ -20,8 +20,7 @@ export default function DashboardLayout({
         enableSystem
         disableTransitionOnChange
       >
-        {/* Header */}
-        <ProtectedHeader />
+        <InboxSidebar />
         {/* Main Content */}
         {children}
       </ThemeProvider>

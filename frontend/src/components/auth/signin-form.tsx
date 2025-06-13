@@ -17,8 +17,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-
+import ProviderAuth from "./provider-auth";
 import { signin } from "@/lib/auth";
+
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -125,6 +126,8 @@ export default function SigninForm() {
               "Sign In"
             )}
           </Button>
+          {/* Other signin options */}
+          <ProviderAuth />
         </form>
       </Form>
     </div>

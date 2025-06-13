@@ -54,11 +54,7 @@ export async function signin(data: { email: string; password: string }) {
   redirect("/dashboard");
 }
 
-export async function getCurrentUser(): Promise<{
-  id: string | undefined;
-  email: string | undefined;
-  name: string | undefined;
-}> {
+export async function getCurrentUser() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -71,10 +67,10 @@ export async function getCurrentUser(): Promise<{
   return { id, email, name };
 }
 
-export async function getToken(): Promise<string | undefined> {
+export async function getProviderToken() {
   const supabase = await createClient();
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  return session?.access_token;
+  return session?.provider_token;
 }
