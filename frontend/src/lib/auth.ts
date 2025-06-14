@@ -74,3 +74,11 @@ export async function getProviderToken() {
   } = await supabase.auth.getSession();
   return session?.provider_token;
 }
+
+export async function getProviderRefreshToken() {
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  return session?.provider_refresh_token;
+}

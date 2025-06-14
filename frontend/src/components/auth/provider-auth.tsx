@@ -3,14 +3,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { googleSignin } from "@/utils/auth";
-import { useRouter } from "next/navigation";
 
 export default function ProviderAuth() {
-  const router = useRouter();
-
   const handleGoogleSignin = async () => {
     await googleSignin();
-    router.push("/dashboard");
   };
 
   return (
@@ -21,16 +17,6 @@ export default function ProviderAuth() {
         </span>
       </div>
       <div className="flex gap-4 sm:grid-cols-2">
-        {/* Microsoft */}
-        {/* <Button variant="outline" type="button" className="w-full">
-          <Image
-            src="/icons/microsoft-icon.svg"
-            alt="Microsoft Icon"
-            width={24}
-            height={24}
-          />
-          Continue with Microsoft
-        </Button> */}
         {/* Google */}
         <Button
           variant="outline"
