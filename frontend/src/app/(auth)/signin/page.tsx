@@ -27,7 +27,7 @@ export default function SigninPage() {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Welcome Back</h1>
             <p className="text-muted-foreground text-lg">
-              Sign in to your Aspira account
+              Sign in to your account
             </p>
           </div>
 

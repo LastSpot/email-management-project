@@ -67,18 +67,23 @@ export async function getCurrentUser() {
   return { id, email, name };
 }
 
-export async function getProviderToken() {
+export async function getProviderTokens() {
   const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  return session?.provider_token;
-}
-
-export async function getProviderRefreshToken() {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  return session?.provider_refresh_token;
+  const { data, error } = await supabase
+    .from("mail_accounts")
+    .select("access_token, refresh_token")
+    .single();
+  if (error) {
+    console.error(error);
+  }
+  if (!data) {
+    return {
+      accessToken: null,
+      refreshToken: null,
+    };
+  }
+  return {
+    accessToken: data?.access_token,
+    refreshToken: data?.refresh_token,
+  };
 }

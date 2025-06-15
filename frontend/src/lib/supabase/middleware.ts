@@ -42,11 +42,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // if (user && authPath.includes(request.nextUrl.pathname)) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/inbox";
-  //   return NextResponse.redirect(url);
-  // }
   if (
     !user &&
     !authPath.includes(request.nextUrl.pathname) &&

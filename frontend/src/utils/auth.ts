@@ -7,10 +7,10 @@ export async function signout() {
 
 export async function googleSignin() {
   const supabase = createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "http://localhost:3000/callback?next=/inbox",
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?next=/inbox`,
       scopes: "https://www.googleapis.com/auth/gmail.modify",
       queryParams: {
         access_type: "offline",
@@ -21,5 +21,4 @@ export async function googleSignin() {
   if (error) {
     console.error("Error signing in with Google:", error);
   }
-  console.log("data", data);
 }

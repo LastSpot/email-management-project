@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { fetchLatestGmailMessages } from "@/lib/email/gmail";
-import EmailTable from "@/components/inbox/email-table";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import CreateFolder from "@/components/inbox/create-folder";
+import FolderTable from "@/components/inbox/folder-table";
+import ScanEmail from "@/components/inbox/scan-email";
 
 export const metadata: Metadata = {
   title: "Name | Inbox",
@@ -18,12 +18,11 @@ export type Email = {
 };
 
 export default async function InboxPage() {
-  const emails = await fetchLatestGmailMessages();
   return (
-    <div>
-      <ScrollArea>
-        <EmailTable emails={emails} />
-      </ScrollArea>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <CreateFolder />
+      <FolderTable />
+      <ScanEmail />
     </div>
   );
 }
