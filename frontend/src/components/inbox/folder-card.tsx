@@ -41,14 +41,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { updateFolder, deleteFolder } from "@/app/actions/folders";
+import { updateFolderSync, deleteFolderSync } from "@/app/actions/core-action";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Folder name is required" }),
   description: z.string(),
 });
 
-export default function FolderCard({ folder }: { folder: FolderType }) {
+export default function FolderCard({
+  folder,
+}: {
+  folder: Omit<FolderType, "user_id">;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,16 +64,33 @@ export default function FolderCard({ folder }: { folder: FolderType }) {
   });
 
   const handleUpdate = async (data: z.infer<typeof formSchema>) => {
-    await updateFolder({
-      id: folder.id,
-      name: data.name,
-      description: data.description,
-      provider_folder_id: folder.provider_folder_id,
-    });
+    try {
+      await updateFolderSync({
+        id: folder.id,
+        name: data.name,
+        description: data.description,
+        provider_folder_id: folder.provider_folder_id,
+      });
+      toast.success("Folder updated successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update folder"
+      );
+    }
   };
 
   const handleDelete = async () => {
-    await deleteFolder(folder.id, folder.provider_folder_id);
+    try {
+      await deleteFolderSync({
+        id: folder.id,
+        provider_folder_id: folder.provider_folder_id,
+      });
+    } catch (error) {
+      console.log("HERE");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to delete folder"
+      );
+    }
   };
 
   return (

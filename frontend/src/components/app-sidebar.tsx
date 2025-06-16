@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Command, HelpCircle, Inbox, MessageCircle } from "lucide-react";
 
 import { NavUser } from "@/components/nav-user";
 import {
@@ -15,142 +15,48 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 
 import { ModeToggle } from "@/components/theme-toggle";
+import { createClient } from "@/lib/supabase/client";
+import { User } from "@/lib/types";
 
-// This is sample data
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+const navMain = [
+  {
+    title: "Inbox Management",
+    url: "/inbox",
+    icon: Inbox,
   },
-  navMain: [
-    {
-      title: "Inbox",
-      url: "/inbox",
-      icon: Inbox,
-      isActive: true,
-    },
-    {
-      title: "Drafts",
-      url: "/drafts",
-      icon: File,
-      isActive: false,
-    },
-    {
-      title: "Sent",
-      url: "/sent",
-      icon: Send,
-      isActive: false,
-    },
-    {
-      title: "Junk",
-      url: "/junk",
-      icon: ArchiveX,
-      isActive: false,
-    },
-    {
-      title: "Trash",
-      url: "/trash",
-      icon: Trash2,
-      isActive: false,
-    },
-  ],
-  mails: [
-    {
-      name: "William Smith",
-      email: "williamsmith@example.com",
-      subject: "Meeting Tomorrow",
-      date: "09:34 AM",
-      teaser:
-        "Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.",
-    },
-    {
-      name: "Alice Smith",
-      email: "alicesmith@example.com",
-      subject: "Re: Project Update",
-      date: "Yesterday",
-      teaser:
-        "Thanks for the update. The progress looks great so far.\nLet's schedule a call to discuss the next steps.",
-    },
-    {
-      name: "Bob Johnson",
-      email: "bobjohnson@example.com",
-      subject: "Weekend Plans",
-      date: "2 days ago",
-      teaser:
-        "Hey everyone! I'm thinking of organizing a team outing this weekend.\nWould you be interested in a hiking trip or a beach day?",
-    },
-    {
-      name: "Emily Davis",
-      email: "emilydavis@example.com",
-      subject: "Re: Question about Budget",
-      date: "2 days ago",
-      teaser:
-        "I've reviewed the budget numbers you sent over.\nCan we set up a quick call to discuss some potential adjustments?",
-    },
-    {
-      name: "Michael Wilson",
-      email: "michaelwilson@example.com",
-      subject: "Important Announcement",
-      date: "1 week ago",
-      teaser:
-        "Please join us for an all-hands meeting this Friday at 3 PM.\nWe have some exciting news to share about the company's future.",
-    },
-    {
-      name: "Sarah Brown",
-      email: "sarahbrown@example.com",
-      subject: "Re: Feedback on Proposal",
-      date: "1 week ago",
-      teaser:
-        "Thank you for sending over the proposal. I've reviewed it and have some thoughts.\nCould we schedule a meeting to discuss my feedback in detail?",
-    },
-    {
-      name: "David Lee",
-      email: "davidlee@example.com",
-      subject: "New Project Idea",
-      date: "1 week ago",
-      teaser:
-        "I've been brainstorming and came up with an interesting project concept.\nDo you have time this week to discuss its potential impact and feasibility?",
-    },
-    {
-      name: "Olivia Wilson",
-      email: "oliviawilson@example.com",
-      subject: "Vacation Plans",
-      date: "1 week ago",
-      teaser:
-        "Just a heads up that I'll be taking a two-week vacation next month.\nI'll make sure all my projects are up to date before I leave.",
-    },
-    {
-      name: "James Martin",
-      email: "jamesmartin@example.com",
-      subject: "Re: Conference Registration",
-      date: "1 week ago",
-      teaser:
-        "I've completed the registration for the upcoming tech conference.\nLet me know if you need any additional information from my end.",
-    },
-    {
-      name: "Sophia White",
-      email: "sophiawhite@example.com",
-      subject: "Team Dinner",
-      date: "1 week ago",
-      teaser:
-        "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
-    },
-  ],
-  folders: [
-    {
-      name: "Important",
-      description: "Important emails",
-      url: "#",
-    },
-  ],
-};
+  {
+    title: "Make Suggestions",
+    url: "/suggestions",
+    icon: MessageCircle,
+  },
+  {
+    title: "Support",
+    url: "/support",
+    icon: HelpCircle,
+  },
+];
 
 export function AppSidebar() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient();
+      const { data } = await supabase.auth.getUser();
+      const userData = {
+        id: data.user?.id || "",
+        name: data.user?.user_metadata.name || "",
+        email: data.user?.email || "",
+        avatar: data.user?.user_metadata.avatar_url || "",
+      };
+      setUser(userData);
+    };
+    fetchUser();
+  }, []);
+
   return (
     <Sidebar
       collapsible="icon"
@@ -176,7 +82,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent className="px-1.5 md:px-0">
             <SidebarMenu>
-              {data.navMain.map((item) => (
+              {navMain.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Link href={item.url}>
                     <SidebarMenuButton
@@ -201,7 +107,7 @@ export function AppSidebar() {
           <ModeToggle />
         </div>
         <div className="flex flex-row gap-2 items-center">
-          <NavUser user={data.user} />
+          {user && <NavUser {...user} />}
           <div className="block md:hidden">
             <ModeToggle />
           </div>

@@ -3,24 +3,25 @@
 import { Folder } from "lucide-react";
 import FolderCard from "./folder-card";
 import { Folder as FolderType } from "@/lib/types";
-import { getFolders } from "@/app/actions/folders";
+import { getFoldersSync } from "@/app/actions/core-action";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getFolders } from "@/app/actions/folders";
+
+type FolderData = Omit<FolderType, "user_id">;
 
 export default function FolderTable() {
-  const [folders, setFolders] = useState<FolderType[]>([]);
+  const [folders, setFolders] = useState<FolderData[]>([]);
   const supabase = createClient();
 
   useEffect(() => {
     const fetchFolders = async () => {
-      const folders = await getFolders();
+      const folders = await getFoldersSync();
       setFolders(folders);
     };
 
     fetchFolders();
-  }, []);
 
-  useEffect(() => {
     const channel = supabase
       .channel("realtime-folders")
       .on(

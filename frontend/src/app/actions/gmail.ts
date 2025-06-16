@@ -1,12 +1,7 @@
+"use server";
+
 import { getGmailClient } from "@/lib/clients/google";
-
-function capitalizeFirst(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-function formatLabelName(name: string) {
-  return `${process.env.PREFIX}-${capitalizeFirst(name.trim())}`;
-}
+import { formatLabelName } from "@/utils/helper";
 
 function decodeBase64Url(str: string): string {
   const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -58,49 +53,41 @@ export async function getUnreadEmails() {
   });
 }
 
+export async function getLabels() {
+  const gmail = await getGmailClient();
+  const res = await gmail.users.labels.list({ userId: "me" });
+  const labels = res.data.labels;
+  let targetLabels = [];
+  for (const label of labels ?? []) {
+    const split = label.name?.split("-");
+    if (split && split.length > 1) {
+      if (split[0] === process.env.PREFIX) {
+        targetLabels.push(label);
+      }
+    }
+  }
+  return targetLabels;
+}
+
 export async function createLabel(name: string) {
   const labelName = formatLabelName(name);
-
   const gmail = await getGmailClient();
-  try {
-    const response = await gmail.users.labels.create({
-      userId: "me",
-      requestBody: {
-        name: labelName,
-        labelListVisibility: "labelShow",
-        messageListVisibility: "show",
-      },
-    });
-    return response.data.id;
-  } catch (error: any) {
-    const isDuplicate =
-      error?.code === 409 || // HTTP conflict
-      error?.response?.status === 409 ||
-      error?.errors?.some((e: any) => e.reason === "duplicate") ||
-      /already exists/i.test(error?.message ?? "");
-
-    if (isDuplicate) {
-      // Fetch existing labels and return ID of the matching one
-      const list = await gmail.users.labels.list({ userId: "me" });
-      const existing = list.data.labels?.find((l) => l.name === labelName);
-      if (existing?.id) {
-        console.info(`Label '${labelName}' already exists – using existing.`);
-        return existing.id;
-      }
-      // If for some reason not found, just ignore
-      console.info(`Label '${labelName}' already exists – skipping create.`);
-      return;
-    }
-    throw error;
-  }
+  const response = await gmail.users.labels.create({
+    userId: "me",
+    requestBody: {
+      name: labelName,
+      labelListVisibility: "labelShow",
+      messageListVisibility: "show",
+    },
+  });
+  return response.data.id;
 }
 
 export async function updateGmailLabel(labelId: string, newName: string) {
   const labelName = formatLabelName(newName);
-
   const gmail = await getGmailClient();
   try {
-    const res = await gmail.users.labels.update({
+    const res = await gmail.users.labels.patch({
       userId: "me",
       id: labelId,
       requestBody: {
@@ -110,30 +97,20 @@ export async function updateGmailLabel(labelId: string, newName: string) {
       },
     });
     return res.data;
-  } catch (error: any) {
-    if (error?.code === 404 || error?.response?.status === 404) {
-      console.info(`Label ${labelId} not found – skipping update.`);
-      return;
-    }
-    throw error;
+  } catch (error) {
+    throw new Error("Folder does not exist in Gmail");
   }
 }
 
 export async function deleteGmailLabel(labelId: string) {
   const gmail = await getGmailClient();
-
   try {
     await gmail.users.labels.delete({
       userId: "me",
       id: labelId,
     });
-  } catch (error: any) {
-    if (error?.code === 404 || error?.response?.status === 404) {
-      // Label does not exist; silently ignore
-      console.info(`Label ${labelId} not found – skipping delete.`);
-      return;
-    }
-    throw error; // rethrow other errors
+  } catch (error) {
+    console.error(error);
   }
 }
 

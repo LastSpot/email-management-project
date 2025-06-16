@@ -23,8 +23,9 @@ import {
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { createFolder } from "@/app/actions/folders";
+import { createFolderSync } from "@/app/actions/core-action";
 import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Folder name is required" }),
@@ -33,7 +34,7 @@ const formSchema = z.object({
 
 export default function CreateFolder() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const supabase = createClient();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,13 +45,28 @@ export default function CreateFolder() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user?.id) {
+      toast.error("Please login to create a folder");
+      setIsLoading(false);
+      return;
+    }
     const folder = {
       name: data.name,
       description: data.description,
+      user_id: user.id,
     };
-    await createFolder(folder);
-    form.reset();
-    toast.success("Folder created successfully");
+    try {
+      await createFolderSync(folder);
+      form.reset();
+      toast.success("Folder created successfully");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Could not create folder";
+      toast.error(message);
+    }
     setIsLoading(false);
   };
 

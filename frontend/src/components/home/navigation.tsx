@@ -2,9 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-{
-  /* TODO: Uncomment button */
-}
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Logo from "@/components/logo";
@@ -43,16 +40,9 @@ export function Navigation() {
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          {/* TODO: Uncomment sign in and request access buttons */}
-          <Link
-            href="/signin"
-            className="text-sm font-medium hover:text-black/70 transition-colors text-black"
-          >
-            Sign In
-          </Link>
-          <Link href="/signup">
+          <Link href="/auth">
             <Button className="w-full border-2 rounded-md border-black bg-white hover:bg-black hover:text-white cursor-pointer text-black">
-              Sign Up
+              Sign In
             </Button>
           </Link>
         </div>

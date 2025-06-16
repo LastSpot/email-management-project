@@ -3,15 +3,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Scan } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { sortEmails } from "@/app/actions/sort";
+import { classifyUnreadEmails } from "@/app/actions/core-action";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ScanEmail() {
   const [isScanning, setIsScanning] = useState(false);
 
   const handleScanEmails = async () => {
     setIsScanning(true);
-    await sortEmails();
+    try {
+      await classifyUnreadEmails();
+      toast.success("Emails classified successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to scan emails"
+      );
+    }
     setIsScanning(false);
   };
 

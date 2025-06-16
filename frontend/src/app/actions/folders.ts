@@ -1,11 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import {
-  createLabel,
-  updateGmailLabel,
-  deleteGmailLabel,
-} from "@/app/actions/gmail";
+import { Folder } from "@/lib/types";
+import { capitalizeFirst } from "@/utils/helper";
 
 export async function getFolders() {
   const supabase = await createClient();
@@ -20,62 +17,31 @@ export async function getFolders() {
   return data;
 }
 
-export async function createFolder(folder: {
-  name: string;
-  description: string;
-}) {
+export async function createFolder(folder: Omit<Folder, "id">) {
   const supabase = await createClient();
-  const user = await supabase.auth.getUser();
-  const provider_folder_id = await createLabel(folder.name);
-
-  const data = {
-    ...folder,
-    user_id: user.data.user?.id,
-    provider_folder_id,
-  };
-  const { error } = await supabase.from("folders").insert(data);
+  const { error } = await supabase
+    .from("folders")
+    .insert({ ...folder, name: capitalizeFirst(folder.name) });
   if (error) {
     console.error(error);
   }
 }
 
-export async function updateFolder(folder: {
-  id: number;
-  name: string;
-  description: string;
-  provider_folder_id: string;
-}) {
-  await updateGmailLabel(folder.provider_folder_id, folder.name);
-
+export async function updateFolder(folder: Omit<Folder, "user_id">) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("folders")
-    .update(folder)
+    .update({ ...folder, name: capitalizeFirst(folder.name) })
     .eq("id", folder.id);
   if (error) {
     console.error(error);
   }
 }
 
-export async function deleteFolder(id: number, provider_folder_id: string) {
-  await deleteGmailLabel(provider_folder_id);
-
+export async function deleteFolder(id: number) {
   const supabase = await createClient();
   const response = await supabase.from("folders").delete().eq("id", id);
   if (response.error) {
     console.error(response.error);
   }
-  console.log(response);
-}
-
-export async function getFoldersToScan() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("folders")
-    .select("name, description, provider_folder_id");
-  if (error) {
-    console.error(error);
-    return [];
-  }
-  return data;
 }

@@ -1,48 +1,37 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Email, Folder } from "../types";
+import { Email, Folder } from "@/lib/types";
 
 const gemini = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const geminiFlashModel = "gemini-2.0-flash";
+// const geminiFlashModel = "gemini-2.0-flash";
 const geminiThinkingModel = "gemini-2.5-pro-preview-06-05";
 
-export async function sortSingleEmail({
-  email,
-  folders,
-}: {
-  email: Email;
-  folders: Omit<Folder, "id">[];
-}) {
-  const response = await gemini.models.generateContent({
-    model: geminiFlashModel,
-    contents: `
-You are a highly accurate email sortation assistant.  
-For the single email below, evaluate its fit for each of the folders listed.  
-**Compare across all folders**—do not treat them in isolation. Assign a compatibility score from 0 to 100 **relative to the other folders**, where:
+const classificationPrompt = (
+  email: Email,
+  folders: Omit<Folder, "user_id">[]
+) => {
+  return `You are an expert email sorter. Given one email and exactly these folders—no others—assign each a strict compatibility score (0–100) relative to the set. Use only the provided folders.
 
-- 0 means “definitely not a match”  
-- 100 means “perfect match”  
+Rules:
+• 0 = no fit, 100 = perfect fit  
+• Weight body + subject > sender + date  
+• Only use the folders listed; do not invent or reference any outside folders  
+• High scores (>85) only when the email’s meaning closely matches the folder’s purpose 
 
-Consider the sender, date, subject line, and full body text.  
-An email about lululemon, for example, should not go into “spam” unless that folder’s description explicitly says it’s for promotional shopping.
-
-Respond with a JSON array of objects, each having:
-- "folderName": the folder’s name  
-- "folderId": the folder’s provider_folder_id  
-- "compatibility": integer between 0 and 100  
-- "emailId": the ID of the email  
+Return a JSON array of objects with:
+  folderName   (string)
+  folderId     (string)
+  compatibility(integer 0–100)
+  emailId      (string)
 
 EMAIL:
-\`\`\`
-ID: ${email.id}
-From: ${email.from}
-Date: ${email.date}
-Subject: ${email.subject}
+ID: ${email.id}  
+From: ${email.from}  
+Date: ${email.date}  
+Subject: ${email.subject}  
 Body:
 ${email.body}
-\`\`\`
 
 FOLDERS:
-\`\`\`
 ${folders
   .map(
     (f) =>
@@ -51,26 +40,29 @@ Description: ${f.description}
 FolderId: ${f.provider_folder_id}`
   )
   .join("\n\n")}
-\`\`\`
 
-Output only valid JSON. Example format:
-\`\`\`
+Output only valid JSON. Example:
 [
-  {
-    "folderName": "Work Projects",
-    "folderId": "Label_12345",
-    "compatibility": 92,
-    "emailId": "${email.id}"
-  },
-  {
-    "folderName": "Personal Finance",
-    "folderId": "Label_67890",
-    "compatibility": 5,
-    "emailId": "${email.id}"
-  }
+  { "folderName": "Work Projects",    "folderId": "Label_12345", "compatibility": 92, "emailId": "${
+    email.id
+  }" },
+  { "folderName": "Personal Finance", "folderId": "Label_67890", "compatibility":  5, "emailId": "${
+    email.id
+  }" }
 ]
-\`\`\`
-`,
+`;
+};
+
+export async function emailClassifications({
+  email,
+  folders,
+}: {
+  email: Email;
+  folders: Omit<Folder, "user_id">[];
+}) {
+  const response = await gemini.models.generateContent({
+    model: geminiThinkingModel,
+    contents: classificationPrompt(email, folders),
     config: {
       responseMimeType: "application/json",
       responseSchema: {

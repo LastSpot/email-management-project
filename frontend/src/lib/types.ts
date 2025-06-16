@@ -1,5 +1,6 @@
 export type Folder = {
   id: number;
+  user_id: string;
   name: string;
   description: string;
   provider_folder_id: string;
@@ -12,4 +13,11 @@ export type Email = {
   subject: string;
   date: string;
   body: string;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
 };
