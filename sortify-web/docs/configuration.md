@@ -16,15 +16,27 @@ NEXT_PUBLIC_SUPABASE_URL=""
 # ========================
 # NODEMAILER CONFIGURATION
 # ========================
-SMPT_HOST=""
-SMPT_PORT=
-SMPT_USER=""
-SMPT_PASSWORD=""
+SMTP_HOST=""
+SMTP_PORT=
+SMTP_USER=""
+SMTP_PASSWORD=""
 
 # =========================
-# BACKEND API CONFIGURATION
+# NEXTJS CONFIGURATION
 # =========================
-BACKEND_API_URL=""
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+# ====================
+# GOOGLE CONFIGURATION
+# ====================
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GEMINI_API_KEY=
+
+# =================
+# APP CONFIGURATION
+# =================
+PREFIX=""
 ```
 
 ---
@@ -40,11 +52,7 @@ BACKEND_API_URL=""
 
 These variables are for connecting to an SMTP server to send emails, used by the contact form.
 
-- `SMPT_HOST`: The hostname of your SMTP provider (e.g., `smtp.gmail.com`).
-- `SMPT_PORT`: The port your SMTP provider uses (e.g., 465 or 587).
-- `SMPT_USER`: The username or email address for authenticating with the SMTP server.
-- `SMPT_PASSWORD`: The password or app-specific password for the SMTP user.
-
-### Backend API Configuration
-
-- `BACKEND_API_URL`: The full base URL for the external backend API that this frontend application will communicate with.
+- `SMTP_HOST`: The hostname of your SMTP provider (e.g., `smtp.gmail.com`).
+- `SMTP_PORT`: The port your SMTP provider uses (e.g., 465 or 587).
+- `SMTP_USER`: The username or email address for authenticating with the SMTP server.
+- `SMTP_PASSWORD`: The password or app-specific password for the SMTP user.

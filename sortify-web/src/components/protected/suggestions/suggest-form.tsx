@@ -110,7 +110,7 @@ export default function SuggestForm({
                 >
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem
-                      value="general-suggestion"
+                      value="General Suggestion"
                       id="general-suggestion"
                       className="border-black border-2"
                     />
@@ -123,7 +123,7 @@ export default function SuggestForm({
                   </div>
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem
-                      value="feature-request"
+                      value="Feature Request"
                       id="feature-request"
                       className="border-black border-2"
                     />
@@ -136,7 +136,7 @@ export default function SuggestForm({
                   </div>
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem
-                      value="bug-report"
+                      value="Bug Report"
                       id="bug-report"
                       className="border-black border-2"
                     />
@@ -149,7 +149,7 @@ export default function SuggestForm({
                   </div>
                   <div className="flex items-center space-x-3">
                     <RadioGroupItem
-                      value="feature-improvement"
+                      value="Feature Improvement"
                       id="feature-improvement"
                       className="border-black border-2"
                     />
