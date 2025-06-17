@@ -3,7 +3,7 @@ import SuggestForm from "@/components/protected/suggestions/suggest-form";
 import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
-  title: "Sortify | Suggestions",
+  title: "Suggestions",
   description: "Suggestions for Sortify",
 };
 

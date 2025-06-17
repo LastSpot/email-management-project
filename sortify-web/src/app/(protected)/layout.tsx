@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import {
   SidebarInset,
@@ -7,12 +6,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
-export const metadata: Metadata = {
-  title: "Name | Dashboard",
-  description: "",
-};
-
-export default function DashboardLayout({
+export default function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

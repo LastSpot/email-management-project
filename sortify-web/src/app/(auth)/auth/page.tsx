@@ -3,7 +3,7 @@ import ProviderAuth from "@/components/auth/provider-auth";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sortify | Authentication",
+  title: "Authentication",
   description: "Authentication for Sortify",
 };
 

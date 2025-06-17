@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { HelpCircle, Inbox, MessageCircle } from "lucide-react";
 
 import { NavUser } from "@/components/nav-user";
@@ -18,8 +17,7 @@ import {
 import Link from "next/link";
 
 import { ModeToggle } from "@/components/theme-toggle";
-import { getCurrentUser } from "@/lib/auth";
-import { User } from "@/lib/types";
+import { useAuth } from "@/hooks/use-auth";
 import Image from "next/image";
 
 const navMain = [
@@ -41,17 +39,7 @@ const navMain = [
 ];
 
 export function AppSidebar() {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getCurrentUser();
-      if (user) {
-        setUser(user);
-      }
-    };
-    fetchUser();
-  }, []);
+  const { user } = useAuth();
 
   return (
     <Sidebar

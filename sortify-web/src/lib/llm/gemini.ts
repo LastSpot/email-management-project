@@ -13,7 +13,7 @@ const classificationPrompt = (
 
 Rules:
 • 0 = no fit, 100 = perfect fit  
-• Weight body + subject > sender + date  
+• Weight all fields equally
 • Only use the folders listed; do not invent or reference any outside folders  
 • High scores (>85) only when the email’s meaning closely matches the folder’s purpose 
 

@@ -10,7 +10,7 @@ export function Footer() {
           </div>
           <div className="flex gap-8">
             <Link
-              href="#"
+              href="/about"
               className="text-sm font-medium hover:text-black/70 transition-colors"
             >
               About
@@ -28,10 +28,16 @@ export function Footer() {
               Terms
             </Link>
             <Link
-              href="#"
+              href="/contact"
               className="text-sm font-medium hover:text-black/70 transition-colors"
             >
               Contact
+            </Link>
+            <Link
+              href="/support"
+              className="text-sm font-medium hover:text-black/70 transition-colors"
+            >
+              Support
             </Link>
           </div>
         </div>

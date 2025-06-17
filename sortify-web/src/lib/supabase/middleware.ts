@@ -36,7 +36,16 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
   const authPath = ["/auth", "/callback"];
-  const homePath = ["/", "/features", "/pricing", "/about", "/contact"];
+  const homePath = [
+    "/",
+    "/features",
+    "/pricing",
+    "/how-it-works",
+    "/about",
+    "/contact",
+    "/support",
+    "/wangle",
+  ];
   const legalPath = ["/privacy", "/terms"];
 
   const {

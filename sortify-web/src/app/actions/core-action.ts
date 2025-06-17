@@ -33,14 +33,15 @@ export async function getFoldersSync() {
 
   // Update labels for folders that exist and create folders that don't exist
   for (const label of labels) {
-    const labelName = label.name?.split("-")[1];
+    const labelName = label.name?.split("-");
+    const updateFolderName = labelName?.slice(1).join("-");
 
     // Update labels for folders that exist
     for (const folder of folders) {
       if (folder.provider_folder_id === label.id) {
         await updateFolder({
           id: folder.id,
-          name: labelName ?? "",
+          name: updateFolderName ?? "",
           description: folder.description,
           provider_folder_id: label.id ?? "",
         });
@@ -53,7 +54,7 @@ export async function getFoldersSync() {
       !folders.some((folder) => folder.provider_folder_id === label.id)
     ) {
       await createFolder({
-        name: labelName,
+        name: updateFolderName ?? "",
         description: "",
         provider_folder_id: label.id ?? "",
         user_id: user.id,
@@ -107,7 +108,7 @@ export async function classifyUnreadEmails() {
       const sorted = await emailClassifications({ email, folders });
       if (sorted) {
         for (const folder of sorted) {
-          if (folder.compatibility > 90) {
+          if (folder.compatibility > 85) {
             await addLabelToEmail(folder.folderId, email.id);
           }
         }

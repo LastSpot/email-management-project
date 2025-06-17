@@ -15,7 +15,7 @@ export default function ProviderAuth() {
       <Button
         variant="outline"
         type="button"
-        className="w-full hover:bg-black hover:text-white cursor-pointer"
+        className="w-full hover:bg-black hover:text-white cursor-pointer border-black/30 border-2"
         onClick={handleGoogleSignin}
       >
         <Image

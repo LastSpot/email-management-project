@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sortify | Wangle",
+  title: "Eira Wangle",
   description: "Wangle for life",
 };
 

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js + Supabase Auth template",
-  description: "Frontend template",
+  title: "Sortify",
+  description: "Sortify is a tool that helps you sort your emails.",
 };
 
 export default function RootLayout({

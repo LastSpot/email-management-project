@@ -8,7 +8,7 @@ import { Footer } from "@/components/home/footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sortify | Terms of Service",
+  title: "Terms of Service",
   description: "Terms of Service for Sortify",
 };
 

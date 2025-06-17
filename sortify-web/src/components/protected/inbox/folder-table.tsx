@@ -6,7 +6,6 @@ import { Folder as FolderType } from "@/lib/types";
 import { getFoldersSync } from "@/app/actions/core-action";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { getFolders } from "@/app/actions/folders";
 
 type FolderData = Omit<FolderType, "user_id">;
 

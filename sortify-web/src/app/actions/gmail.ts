@@ -13,7 +13,7 @@ export async function getUnreadEmails() {
   const gmail = await getGmailClient();
 
   // --- paginate through all unread messages ---
-  let allMessages: gmail_v1.Schema$Message[] = [];
+  const allMessages: gmail_v1.Schema$Message[] = [];
   let pageToken: string | undefined = undefined;
 
   do {
@@ -77,7 +77,7 @@ export async function getLabels() {
   const gmail = await getGmailClient();
   const res = await gmail.users.labels.list({ userId: "me" });
   const labels = res.data.labels;
-  let targetLabels = [];
+  const targetLabels = [];
   for (const label of labels ?? []) {
     const split = label.name?.split("-");
     if (split && split.length > 1) {
@@ -118,6 +118,7 @@ export async function updateGmailLabel(labelId: string, newName: string) {
     });
     return res.data;
   } catch (error) {
+    console.error(error);
     throw new Error("Folder does not exist in Gmail");
   }
 }
@@ -144,8 +145,8 @@ export async function addLabelToEmail(labelId: string, emailId: string) {
         addLabelIds: [labelId],
       },
     });
-  } catch (error: any) {
-    if (error?.code === 404 || error?.response?.status === 404) {
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("404")) {
       console.info(
         `Label ${labelId} or email ${emailId} not found – skipping.`
       );

@@ -28,3 +28,10 @@ export type Suggestion = {
   suggestionType: string;
   message: string;
 };
+
+export type Contact = {
+  name: string;
+  email: string;
+  inquiryType: string;
+  message: string;
+};

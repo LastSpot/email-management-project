@@ -4,7 +4,7 @@ import FolderTable from "@/components/protected/inbox/folder-table";
 import ScanEmail from "@/components/protected/inbox/scan-email";
 
 export const metadata: Metadata = {
-  title: "Sortify | Inbox",
+  title: "Inbox",
   description: "Inbox for Sortify",
 };
 

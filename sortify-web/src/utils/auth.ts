@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { getURL } from "./helper";
 
 export async function signout() {
   const supabase = createClient();
@@ -10,7 +11,7 @@ export async function googleSignin() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?next=/inbox`,
+      redirectTo: `${getURL()}/api/auth/callback?next=/inbox`,
       scopes: "https://www.googleapis.com/auth/gmail.modify",
       queryParams: {
         access_type: "offline",

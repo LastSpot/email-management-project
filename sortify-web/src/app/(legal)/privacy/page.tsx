@@ -8,7 +8,7 @@ import { Footer } from "@/components/home/footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sortify | Privacy Policy",
+  title: "Privacy Policy",
   description: "Privacy Policy for Sortify",
 };
 
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             </h2>
             <p>
               We do not store any personal information on our servers. All data
-              is stored in the cloud. Personal information includes emails'
+              is stored in the cloud. Personal information includes emails&apos;
               contents. Only credentials are stored on our servers to provide
               you with the service and authentication.
             </p>
