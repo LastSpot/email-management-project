@@ -2,12 +2,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
 import { FolderOpen } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function HeroSection() {
   return (
     <main className="container px-4 py-8">
       <div className="flex flex-col items-center text-center justify-center space-y-8">
         <div className="space-y-4 max-w-3xl">
+          <Badge className="text-lg animate-pulse">
+            Closed Beta - Request for access
+          </Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Organize Your Inbox Automatically
           </h1>
