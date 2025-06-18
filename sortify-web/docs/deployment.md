@@ -20,10 +20,15 @@ Vercel is the company that created Next.js, and it offers the easiest and most o
 2.  Go to the "Environment Variables" section. Here, you need to add the same variables you have in your local `.env.local` file. Copy and paste each variable one by one:
     - `NEXT_PUBLIC_SUPABASE_URL`
     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-    - `BACKEND_API_URL`
-    - `EMAIL_HOST`
-    - `EMAIL_USER`
-    - `EMAIL_PASSWORD`
+    - `SMTP_HOST`
+    - `SMTP_PORT`
+    - `SMTP_USER`
+    - `SMTP_PASSWORD`
+    - `NEXT_PUBLIC_APP_URL`
+    - `GOOGLE_CLIENT_ID`
+    - `GOOGLE_CLIENT_SECRET`
+    - `GEMINI_API_KEY`
+    - `PREFIX`
 
 ### Step 3: Deploy
 
@@ -51,10 +56,15 @@ Railway is another excellent platform that is great for deploying full-stack app
 3.  Add the same environment variables that you would for Vercel. Click "Add New Variable" and add each one:
     - `NEXT_PUBLIC_SUPABASE_URL`
     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-    - `BACKEND_API_URL`
-    - `EMAIL_HOST`
-    - `EMAIL_USER`
-    - `EMAIL_PASSWORD`
+    - `SMTP_HOST`
+    - `SMTP_PORT`
+    - `SMTP_USER`
+    - `SMTP_PASSWORD`
+    - `NEXT_PUBLIC_APP_URL`
+    - `GOOGLE_CLIENT_ID`
+    - `GOOGLE_CLIENT_SECRET`
+    - `GEMINI_API_KEY`
+    - `PREFIX`
 
 ### Step 3: Check Build and Start Commands
 
