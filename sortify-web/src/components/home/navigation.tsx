@@ -75,16 +75,9 @@ export function Navigation() {
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-4 border-t border-black/10">
-              <Link
-                href="/signin"
-                className="text-sm font-medium hover:text-black/70 transition-colors px-2 py-1"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sign In
-              </Link>
-              <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
-                <Button className="border border-black bg-white text-black hover:bg-black hover:text-white">
-                  Sign Up
+              <Link href="/auth">
+                <Button className="w-full border-2 rounded-md border-black bg-white hover:bg-black hover:text-white cursor-pointer text-black">
+                  Sign In
                 </Button>
               </Link>
             </div>
