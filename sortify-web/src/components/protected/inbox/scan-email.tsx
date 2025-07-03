@@ -38,7 +38,8 @@ export default function ScanEmail() {
             </h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
               Click below to scan your unread emails and automatically sort them
-              into your folders using AI classification.
+              into your folders using AI classification. (This may take more
+              than one click if you have a lot of unread emails.)
             </p>
           </div>
           <Button

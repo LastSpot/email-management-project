@@ -9,34 +9,88 @@ function decodeBase64Url(str: string): string {
   return Buffer.from(b64, "base64").toString("utf-8");
 }
 
+{
+  /* Get ALL unread emails */
+}
+// export async function getUnreadEmails() {
+//   const gmail = await getGmailClient();
+
+//   // --- paginate through all unread messages ---
+//   const allMessages: gmail_v1.Schema$Message[] = [];
+//   let pageToken: string | undefined = undefined;
+
+//   do {
+//     const { data }: { data: gmail_v1.Schema$ListMessagesResponse } =
+//       await gmail.users.messages.list({
+//         userId: "me",
+//         q: "is:unread",
+//         maxResults: 500,
+//         pageToken,
+//       });
+
+//     if (data.messages) {
+//       allMessages.push(...data.messages);
+//     }
+
+//     pageToken = data.nextPageToken ?? undefined;
+//   } while (pageToken);
+
+//   if (allMessages.length === 0) return [];
+
+//   // fetch message details in parallel
+//   const detailed = await Promise.all(
+//     allMessages.map((message) =>
+//       gmail.users.messages.get({
+//         userId: "me",
+//         id: message.id!,
+//         format: "full",
+//       })
+//     )
+//   );
+
+//   return detailed.map((r) => {
+//     const msg = r.data;
+//     const headers = Object.fromEntries(
+//       (msg.payload?.headers ?? []).map((h) => [h.name?.toLowerCase(), h.value])
+//     );
+
+//     // find plain-text body part
+//     let rawBody = "";
+//     if (msg.payload?.parts) {
+//       const part = msg.payload.parts.find((p) => p.mimeType === "text/plain");
+//       rawBody = part?.body?.data ?? "";
+//     } else {
+//       rawBody = msg.payload?.body?.data ?? "";
+//     }
+
+//     const body = decodeBase64Url(rawBody);
+
+//     return {
+//       id: msg.id!,
+//       threadId: msg.threadId!,
+//       from: headers["from"] ?? "",
+//       subject: headers["subject"] ?? "",
+//       date: headers["date"] ?? "",
+//       body,
+//     };
+//   });
+// }
+
+{
+  /* Get at most 500 unread emails */
+}
 export async function getUnreadEmails() {
   const gmail = await getGmailClient();
 
-  // --- paginate through all unread messages ---
-  const allMessages: gmail_v1.Schema$Message[] = [];
-  let pageToken: string | undefined = undefined;
+  const { data }: { data: gmail_v1.Schema$ListMessagesResponse } =
+    await gmail.users.messages.list({
+      userId: "me",
+      q: "is:unread",
+      maxResults: 500,
+    });
 
-  do {
-    const { data }: { data: gmail_v1.Schema$ListMessagesResponse } =
-      await gmail.users.messages.list({
-        userId: "me",
-        q: "is:unread",
-        maxResults: 500,
-        pageToken,
-      });
-
-    if (data.messages) {
-      allMessages.push(...data.messages);
-    }
-
-    pageToken = data.nextPageToken ?? undefined;
-  } while (pageToken);
-
-  if (allMessages.length === 0) return [];
-
-  // fetch message details in parallel
   const detailed = await Promise.all(
-    allMessages.map((message) =>
+    (data.messages ?? []).map((message) =>
       gmail.users.messages.get({
         userId: "me",
         id: message.id!,
@@ -48,13 +102,20 @@ export async function getUnreadEmails() {
   return detailed.map((r) => {
     const msg = r.data;
     const headers = Object.fromEntries(
-      (msg.payload?.headers ?? []).map((h) => [h.name?.toLowerCase(), h.value])
+      (msg.payload?.headers ?? []).map(
+        (h: gmail_v1.Schema$MessagePartHeader) => [
+          h.name?.toLowerCase(),
+          h.value,
+        ]
+      )
     );
 
     // find plain-text body part
     let rawBody = "";
     if (msg.payload?.parts) {
-      const part = msg.payload.parts.find((p) => p.mimeType === "text/plain");
+      const part = msg.payload.parts.find(
+        (p: gmail_v1.Schema$MessagePart) => p.mimeType === "text/plain"
+      );
       rawBody = part?.body?.data ?? "";
     } else {
       rawBody = msg.payload?.body?.data ?? "";
