@@ -2,8 +2,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Email, Folder } from "@/lib/types";
 
 const gemini = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-// const geminiFlashModel = "gemini-2.0-flash";
-const geminiThinkingModel = "gemini-2.5-pro-preview-06-05";
+const geminiFlashModel = "gemini-2.0-flash";
+// const geminiThinkingModel = "gemini-2.5-pro-preview-06-05";
 
 const classificationPrompt = (
   email: Email,
@@ -61,7 +61,7 @@ export async function emailClassifications({
   folders: Omit<Folder, "user_id">[];
 }) {
   const response = await gemini.models.generateContent({
-    model: geminiThinkingModel,
+    model: geminiFlashModel,
     contents: classificationPrompt(email, folders),
     config: {
       responseMimeType: "application/json",
