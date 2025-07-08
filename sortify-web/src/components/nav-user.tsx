@@ -84,14 +84,14 @@ export function NavUser(user: User) {
               </Link>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href="#" className="cursor-pointer">
                   <Sparkles />
                   Upgrade to Pro
                 </Link>
               </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
             {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
