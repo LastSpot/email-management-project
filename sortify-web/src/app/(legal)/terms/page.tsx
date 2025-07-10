@@ -76,6 +76,11 @@ export default function TermsPage() {
               activities that occur under your account. You agree to notify
               Sortify immediately of any unauthorized use of your account.
             </p>
+            <p className="mt-4">
+              The use of raw or derived user data received from Workspace APIs
+              will adhere to the Google User Data Policy, including the Limited
+              Use requirements.
+            </p>
 
             <Separator className="my-10" />
 
