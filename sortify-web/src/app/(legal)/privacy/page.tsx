@@ -64,6 +64,11 @@ export default function PrivacyPage() {
               We may also collect information about how you access and use our
               application.
             </p>
+            <p>
+              The use of raw or derived user data received from Workspace APIs
+              will adhere to the Google User Data Policy, including the Limited
+              Use requirements.
+            </p>
 
             <Separator className="my-10" />
 
