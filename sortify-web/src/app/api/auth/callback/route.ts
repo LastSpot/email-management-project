@@ -14,6 +14,7 @@ export async function GET(request: Request) {
 		const { data, error } = await supabase.auth.exchangeCodeForSession(
 			code
 		);
+
 		if (!error && data?.session) {
 			const session = data.session;
 			const user_id = session?.user.id;
@@ -51,6 +52,8 @@ export async function GET(request: Request) {
 			} else {
 				return NextResponse.redirect(`${origin}${next}`);
 			}
+		} else {
+			return NextResponse.redirect(`${origin}/error`);
 		}
 	}
 

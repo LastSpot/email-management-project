@@ -7,6 +7,9 @@ export function formatLabelName(name: string) {
 }
 
 export function getURL() {
+	if (process.env.NODE_ENV === 'development') {
+		return 'http://localhost:3000';
+	}
 	const url = process.env.NEXT_PUBLIC_APP_URL!;
 	return url.startsWith('https') ? url : `https://${url}`;
 }
